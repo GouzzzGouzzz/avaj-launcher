@@ -1,0 +1,14 @@
+package fr.ft.avajlauncher.flyable;
+
+import fr.ft.avajlauncher.weather.WeatherTower;
+
+public abstract class Flyable {
+    protected WeatherTower weatherTower = null;
+
+    public abstract void updateConditions();
+
+    public void registerTower(WeatherTower p_tower){
+        weatherTower = p_tower;
+    };
+
+}

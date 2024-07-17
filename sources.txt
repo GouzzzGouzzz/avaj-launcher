@@ -1,0 +1,13 @@
+src/fr/ft/avajlauncher/Main.java
+src/fr/ft/avajlauncher/aircraft/JetPlane.java
+src/fr/ft/avajlauncher/aircraft/Helicopter.java
+src/fr/ft/avajlauncher/aircraft/Baloon.java
+src/fr/ft/avajlauncher/aircraft/Coordinates.java
+src/fr/ft/avajlauncher/aircraft/Aircraft.java
+src/fr/ft/avajlauncher/aircraft/AircraftFactory.java
+src/fr/ft/avajlauncher/constant/AircraftType.java
+src/fr/ft/avajlauncher/constant/WeatherType.java
+src/fr/ft/avajlauncher/flyable/Flyable.java
+src/fr/ft/avajlauncher/weather/WeatherProvider.java
+src/fr/ft/avajlauncher/weather/WeatherTower.java
+src/fr/ft/avajlauncher/weather/Tower.java
