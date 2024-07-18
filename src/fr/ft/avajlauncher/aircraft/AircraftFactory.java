@@ -16,7 +16,7 @@ public class AircraftFactory {
         }
         return instance;
     }
-    //end of singleton
+    //End of singleton
 
     public Flyable newAircraft(String p_type, String p_name, Coordinates p_coordinates){
         AircraftType type;
