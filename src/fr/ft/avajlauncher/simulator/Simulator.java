@@ -63,7 +63,7 @@ public class Simulator {
             try {
                 weatherChangeNb = readfile.nextInt();
                 if (weatherChangeNb <= 0){
-                    System.out.println("Invalid number of weather changes, should be positive and > 0 !");
+                    System.out.println("Invalid number of weather changes, should be higher than 0 !");
                     readfile.close();
                     return;
                 }
@@ -93,8 +93,8 @@ public class Simulator {
                 return ;
             }
             try {
-                if (Integer.valueOf(splitLine[2]) < 0 || Integer.valueOf(splitLine[3]) < 0 || Integer.valueOf(splitLine[4]) < 0){
-                    System.out.println("Invalid coordinates value should be positive and > 0, line number :" + lineNumber);
+                if (Integer.valueOf(splitLine[4]) < 0){
+                    System.out.println("Invalid height value should be positive line number :" + lineNumber);
                     readfile.close();
                     return ;
                 }
