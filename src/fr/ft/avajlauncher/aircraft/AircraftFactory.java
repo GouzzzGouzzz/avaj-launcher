@@ -5,9 +5,9 @@ import fr.ft.avajlauncher.constant.AircraftType;
 
 public class AircraftFactory {
 
+    private static long id = -1;
     //Start of singleton
     private static AircraftFactory instance = null;
-
     private AircraftFactory(){};
 
     public static AircraftFactory getInstance() {
@@ -25,13 +25,14 @@ public class AircraftFactory {
         } catch (IllegalArgumentException  e) {
             return null;
         }
+        id++;
         switch (type) {
             case HELICOPTER:
-                return new Helicopter(1, p_name, p_coordinates);
+                return new Helicopter(id, p_name, p_coordinates);
             case JETPLANE:
-                return new JetPlane(1, p_name, p_coordinates);
+                return new JetPlane(id, p_name, p_coordinates);
             case BALOON:
-                return new Baloon(1, p_name, p_coordinates);
+                return new Baloon(id, p_name, p_coordinates);
             default:
                 break;
         }

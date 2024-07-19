@@ -3,11 +3,10 @@ package fr.ft.avajlauncher.weather;
 import java.util.Random;
 
 //Implementation of the perlin noise from Ken Perlin Original Code
-// slighty modified
+// using a random seed (0- to 100 000) to randomize my coords placement (that are on range 0 - 100)
 // https://mrl.cs.nyu.edu/~perlin/noise/
 
 public class PerlinNoise {
-    private static int seed;
     private int[] p = new int[512];
     private final int[] base_permutation = {
         151, 160, 137,  91,  90,  15, 131,  13, 201,  95,  96,  53, 194, 233,   7, 225,
@@ -42,11 +41,7 @@ public class PerlinNoise {
 
     public static PerlinNoise getInstance(){
         if (instance == null)
-        {
-            Random rand = new Random();
-            seed = rand.nextInt(100000);
             instance = new PerlinNoise();
-        }
         return instance;
     }
     //End of singleton
@@ -70,14 +65,24 @@ public class PerlinNoise {
        return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
+
+    //Maybe add a params to give a seed to apply instead of generating one
+    //so i can calculate a perlin noise in a "given range" instead of
+    //applying an offset on each coordinates
+
     public double generate(double x, double y, double z)
     {
         double noise, fade_x, fade_y, fade_z;
         int A, AA, AB, B, BA, BB, X, Y, Z;
 
+        int seed;
+        //Add a random offset to our coordinats to create a random output
+        Random rand = new Random();
+        seed = rand.nextInt(100000);
         x += seed;
         y += seed;
         z += seed;
+        //Using Perlin Noise Alorythm with our coordinates with the offset
 
         X = (int)Math.floor(x) & 255;
         Y = (int)Math.floor(x) & 255;

@@ -1,6 +1,5 @@
 package fr.ft.avajlauncher.aircraft;
 
-import fr.ft.avajlauncher.aircraft.Coordinates;
 import fr.ft.avajlauncher.flyable.Flyable;
 
 public class Aircraft extends Flyable{
@@ -12,6 +11,14 @@ public class Aircraft extends Flyable{
         id = p_id;
         name = p_name;
         coordinates = p_coordinates;
+    }
+    @Override
+    public String getName(){
+        return name;
+    }
+    @Override
+    public long getId(){
+        return id;
     }
 
     @Override
