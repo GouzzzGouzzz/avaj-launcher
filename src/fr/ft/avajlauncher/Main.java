@@ -1,11 +1,11 @@
 package fr.ft.avajlauncher;
 
-import fr.ft.avajlauncher.simulator.simulator;
+import fr.ft.avajlauncher.simulator.Simulator;
 
 public class Main {
     public static void main(String[] args)
     {
-        simulator simu = new simulator();
+        Simulator simu = new Simulator();
         simu.exec(args);
     }
 }

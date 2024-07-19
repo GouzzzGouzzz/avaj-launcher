@@ -2,7 +2,6 @@ package fr.ft.avajlauncher.weather;
 
 import java.util.Random;
 import fr.ft.avajlauncher.aircraft.Coordinates;
-import fr.ft.avajlauncher.weather.PerlinNoise;
 
 public class WeatherProvider {
     private final String[] weather = {"RAIN", "FOG", "SUN", "SNOW"};

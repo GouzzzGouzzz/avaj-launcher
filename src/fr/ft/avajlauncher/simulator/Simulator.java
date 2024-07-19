@@ -9,7 +9,7 @@ import fr.ft.avajlauncher.constant.AircraftType;
 import fr.ft.avajlauncher.flyable.Flyable;
 import fr.ft.avajlauncher.weather.WeatherTower;
 
-public class simulator {
+public class Simulator {
 
     private static boolean check_file(String[] args){
         if (args.length == 0){
