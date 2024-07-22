@@ -6,11 +6,13 @@ public class WeatherTower extends Tower {
 
     public String getWeather(Coordinates p_coordinates)
     {
-        return "asd";
+        return WeatherProvider.getInstance().getCurrentWeather(p_coordinates);
     }
 
     public void changeWeather()
     {
+        PerlinNoise.getInstance().changeSeed();
+        this.conditionChanged();
         return ;
     }
 }

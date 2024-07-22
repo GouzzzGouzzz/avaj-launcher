@@ -54,8 +54,8 @@ public class Simulator {
         }
         if (readfile.hasNextLine()){
             try {
-                weatherChangeNb = readfile.nextInt();
-                if (weatherChangeNb <= 0){
+                this.weatherChangeNb = readfile.nextInt();
+                if (this.weatherChangeNb <= 0){
                     System.out.println("Invalid number of weather changes, should be higher than 0 !");
                     readfile.close();
                     return null;
@@ -106,8 +106,9 @@ public class Simulator {
             coords[0] = Integer.valueOf(splitLine[2]);
             coords[1] = Integer.valueOf(splitLine[3]);
             coords[2] = Integer.valueOf(splitLine[4]);
-            newFlyable = ACFactory.newAircraft(splitLine[0], splitLine[1], CoordBuilder.build(coords[0],coords[1],coords[2]));
-            w_Tower.register(newFlyable);
+            newFlyable = this.ACFactory.newAircraft(splitLine[0], splitLine[1], this.CoordBuilder.build(coords[0],coords[1],coords[2]));
+            newFlyable.registerTower(this.w_Tower);
+            this.w_Tower.register(newFlyable);
             lineNumber++;
         }
         readfile.close();
@@ -121,6 +122,9 @@ public class Simulator {
         if (readfile == null)
             return ;
         parseAndCreate(readfile);
+        for (int i = 0; i < this.weatherChangeNb; i++){
+            this.w_Tower.changeWeather();
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import java.util.Random;
 // https://mrl.cs.nyu.edu/~perlin/noise/
 
 public class PerlinNoise {
+    private double[] seed = new double[3];
     private int[] p = new int[512];
     private final int[] base_permutation = {
         151, 160, 137,  91,  90,  15, 131,  13, 201,  95,  96,  53, 194, 233,   7, 225,
@@ -34,8 +35,12 @@ public class PerlinNoise {
         //Avoid potential overflow and avoid using modulo to acces the array
         for (int i = 0; i < 256; i++)
         {
-            p[i] = base_permutation[i];
-            p[256 + i] = base_permutation[i];
+            this.p[i] = base_permutation[i];
+            this.p[256 + i] = base_permutation[i];
+            Random rand = new Random();
+            this.seed[0] = rand.nextDouble(0.1, 0.9);
+            this.seed[1] = rand.nextDouble(0.1, 0.9);
+            this.seed[2] = rand.nextDouble(0.1, 0.9);
         }
     }
 
@@ -45,6 +50,13 @@ public class PerlinNoise {
         return instance;
     }
     //End of singleton
+
+    public void changeSeed(){
+        Random rand = new Random();
+        this.seed[0] = rand.nextDouble(0.1, 0.9);
+        this.seed[1] = rand.nextDouble(0.1, 0.9);
+        this.seed[2] = rand.nextDouble(0.1, 0.9);
+    }
 
     //Function for perlin noise
     private static double fade(double t) {
@@ -74,19 +86,14 @@ public class PerlinNoise {
     {
         double noise, fade_x, fade_y, fade_z;
         int A, AA, AB, B, BA, BB, X, Y, Z;
-
-        int seed;
-        //Add a random offset to our coordinats to create a random output
-        Random rand = new Random();
-        seed = rand.nextInt(100000);
-        x += seed;
-        y += seed;
-        z += seed;
         //Using Perlin Noise Alorythm with our coordinates with the offset
+        x += this.seed[0];
+        y += this.seed[1];
+        z += this.seed[2];
 
         X = (int)Math.floor(x) & 255;
-        Y = (int)Math.floor(x) & 255;
-        Z = (int)Math.floor(x) & 255;
+        Y = (int)Math.floor(y) & 255;
+        Z = (int)Math.floor(z) & 255;
 
         x -= Math.floor(x);
         y -= Math.floor(y);

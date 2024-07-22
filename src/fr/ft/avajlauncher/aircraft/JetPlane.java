@@ -31,5 +31,8 @@ public class JetPlane extends Aircraft{
             default:
                 break;
         }
+        if (!this.prevWeather.equals(type.toString())){
+            System.out.println("Weather change !");
+        }
     }
 }

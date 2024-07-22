@@ -1,6 +1,5 @@
 package fr.ft.avajlauncher.weather;
 
-import java.util.Random;
 import fr.ft.avajlauncher.aircraft.Coordinates;
 
 public class WeatherProvider {
@@ -17,19 +16,11 @@ public class WeatherProvider {
     //End of singleton
 
     public String getCurrentWeather(Coordinates p_coordinates){
-        double value, rand_x, rand_y, rand_z;
-        double x, y, z;
+        double value;
         int type;
         PerlinNoise noise = PerlinNoise.getInstance();
-        Random rand = new Random();
 
-        rand_x = rand.nextDouble(0.1, 0.9);
-        rand_y = rand.nextDouble(0.1, 0.9);
-        rand_z = rand.nextDouble(0.1, 0.9);
-        x = p_coordinates.getLatitude() + rand_x;
-        y = p_coordinates.getLongitude() + rand_y;
-        z = p_coordinates.getHeight() + rand_z;
-        value = noise.generate(x, y, z);
+        value = noise.generate(p_coordinates.getLatitude(), p_coordinates.getLongitude(), p_coordinates.getHeight());
         if (value < -0.5)
             type = 0;
         else if (value < 0)
