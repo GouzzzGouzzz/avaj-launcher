@@ -53,9 +53,9 @@ public class PerlinNoise {
 
     public void changeSeed(){
         Random rand = new Random();
-        this.seed[0] = rand.nextDouble(0.1, 0.9);
-        this.seed[1] = rand.nextDouble(0.1, 0.9);
-        this.seed[2] = rand.nextDouble(0.1, 0.9);
+        this.seed[0] = rand.nextDouble(0.99999);
+        this.seed[1] = rand.nextDouble(0.99999);
+        this.seed[2] = rand.nextDouble(0.99999);
     }
 
     //Function for perlin noise

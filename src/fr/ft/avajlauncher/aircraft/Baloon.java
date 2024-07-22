@@ -1,6 +1,7 @@
 package fr.ft.avajlauncher.aircraft;
 
 import fr.ft.avajlauncher.constant.WeatherType;
+import fr.ft.avajlauncher.weather.WeatherMessage;
 
 public class Baloon extends Aircraft{
 
@@ -11,10 +12,14 @@ public class Baloon extends Aircraft{
     public void updateConditions(){
         String weather = weatherTower.getWeather(this.coordinates);
         WeatherType type;
+        boolean output = false;
         try {
             type = WeatherType.valueOf(weather.toUpperCase());
         } catch (IllegalArgumentException  e) {
             return ;
+        }
+        if (!this.prevWeather.equals(type.toString())){
+            output = true;
         }
         switch (type) {
             case SUN:
@@ -35,8 +40,9 @@ public class Baloon extends Aircraft{
             default:
                 break;
         }
-        if (!this.prevWeather.equals(type.toString())){
-            System.out.println("Weather change !");
+        if (output){
+            String msg = WeatherMessage.getRandomMessage(type);
+            System.out.println(this.getClass().getSimpleName() + "#" + this.getName() + "(" + this.getId() + "): " + msg);
         }
     }
 

@@ -14,3 +14,4 @@
 ./src/fr/ft/avajlauncher/weather/WeatherTower.java
 ./src/fr/ft/avajlauncher/weather/PerlinNoise.java
 ./src/fr/ft/avajlauncher/weather/Tower.java
+./src/fr/ft/avajlauncher/weather/WeatherMessage.java
