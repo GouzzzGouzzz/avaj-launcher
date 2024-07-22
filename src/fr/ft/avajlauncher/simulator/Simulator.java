@@ -10,6 +10,10 @@ import fr.ft.avajlauncher.flyable.Flyable;
 import fr.ft.avajlauncher.weather.WeatherTower;
 
 public class Simulator {
+    private int weatherChangeNb = 0;
+    AircraftFactory ACFactory = AircraftFactory.getInstance();
+    CoordinatesBuilder CoordBuilder = CoordinatesBuilder.getInstance();
+    WeatherTower w_Tower = new WeatherTower();
 
     private static boolean check_file(String[] args){
         if (args.length == 0){
@@ -37,27 +41,16 @@ public class Simulator {
         return true;
     }
 
-    public void exec(String[] args){
-        if (check_file(args) == false)
-            return ;
-
-        File file = new File("../" + args[0]);
+    private Scanner initFile(String filename){
+        File file = new File("../" + filename);
         Scanner readfile = null;
-        int weatherChangeNb, lineNumber;
-        String buffer;
-        String[] splitLine;
-        int[] coords = new int[3];
-        AircraftFactory ACFactory = AircraftFactory.getInstance();
-        CoordinatesBuilder CoordBuilder = CoordinatesBuilder.getInstance();
-        WeatherTower w_Tower = new WeatherTower();
-        Flyable newFlyable;
 
         try {
             readfile = new Scanner(file);
         } catch (Exception FileNotFoundException) {
             readfile.close();
             System.out.println("You won't see this error otherwise the previous code don't works ...");
-            return ;
+            return null;
         }
         if (readfile.hasNextLine()){
             try {
@@ -65,21 +58,28 @@ public class Simulator {
                 if (weatherChangeNb <= 0){
                     System.out.println("Invalid number of weather changes, should be higher than 0 !");
                     readfile.close();
-                    return;
+                    return null;
                 }
             } catch (Exception e) {
                 readfile.close();
                 System.out.println("Out of range number of weather changes ! or not an int ?");
-                return ;
+                return null;
             }
         }
         readfile.nextLine();
+        return readfile;
+    }
+
+    private void parseAndCreate(Scanner readfile){
+        int lineNumber;
+        String[] splitLine;
+        int[] coords = new int[3];
+        Flyable newFlyable;
 
         lineNumber = 1;
         while (readfile.hasNextLine()) {
             //now parse each line that should be like this: TYPE NAME LONGITUDE LATITUDE HEIGHT.
-            buffer = readfile.nextLine();
-            splitLine = buffer.split(" ");
+            splitLine = readfile.nextLine().split(" ");
             if (splitLine.length != 5){
                 System.out.println("Invalid number of args, line number :" + lineNumber);
                 readfile.close();
@@ -111,6 +111,16 @@ public class Simulator {
             lineNumber++;
         }
         readfile.close();
+    }
+
+    public void exec(String[] args){
+        Scanner readfile = null;
+        if (check_file(args) == false)
+            return ;
+        readfile = initFile(args[0]);
+        if (readfile == null)
+            return ;
+        parseAndCreate(readfile);
     }
 }
 
