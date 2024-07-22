@@ -1,6 +1,7 @@
 package fr.ft.avajlauncher.simulator;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import fr.ft.avajlauncher.aircraft.AircraftFactory;
@@ -17,16 +18,16 @@ public class Simulator {
 
     private static boolean check_file(String[] args){
         if (args.length == 0){
-            System.out.println("Need atleast one args !");
+            System.err.println("Need atleast one args !");
             return false;
         }
         if (!args[0].endsWith(".txt")){
-            System.out.println("Invalid file extension !");
+            System.err.println("Invalid file extension !");
             return false;
         }
         File file = new File("../" + args[0]);
         if (!file.exists() || !file.canRead()){
-            System.out.println("Couldn't read or open this file !");
+            System.err.println("Couldn't read or open this file !");
             return false;
         }
         Scanner readfile = null;
@@ -34,7 +35,7 @@ public class Simulator {
             readfile = new Scanner(file);
         } catch (Exception FileNotFoundException) {
             readfile.close();
-            System.out.println("You won't see this error otherwise the previous code don't works ...");
+            System.err.println("You won't see this error otherwise the previous code don't works ...");
             return false;
         }
         readfile.close();
@@ -49,20 +50,20 @@ public class Simulator {
             readfile = new Scanner(file);
         } catch (Exception FileNotFoundException) {
             readfile.close();
-            System.out.println("You won't see this error otherwise the previous code don't works ...");
+            System.err.println("You won't see this error otherwise the previous code don't works ...");
             return null;
         }
         if (readfile.hasNextLine()){
             try {
                 this.weatherChangeNb = readfile.nextInt();
                 if (this.weatherChangeNb <= 0){
-                    System.out.println("Invalid number of weather changes, should be higher than 0 !");
+                    System.err.println("Invalid number of weather changes, should be higher than 0 !");
                     readfile.close();
                     return null;
                 }
             } catch (Exception e) {
                 readfile.close();
-                System.out.println("Out of range number of weather changes ! or not an int ?");
+                System.err.println("Out of range number of weather changes ! or not an int ?");
                 return null;
             }
         }
@@ -78,28 +79,27 @@ public class Simulator {
 
         lineNumber = 1;
         while (readfile.hasNextLine()) {
-            //now parse each line that should be like this: TYPE NAME LONGITUDE LATITUDE HEIGHT.
             splitLine = readfile.nextLine().split(" ");
             if (splitLine.length != 5){
-                System.out.println("Invalid number of args, line number :" + lineNumber);
+                System.err.println("Invalid number of args, line number :" + lineNumber);
                 readfile.close();
                 return ;
             }
             try {
                 AircraftType.valueOf(splitLine[0].toUpperCase());
             } catch (IllegalArgumentException  e) {
-                System.out.println("Invalid type of Aircraft, line number :" + lineNumber);
+                System.err.println("Invalid type of Aircraft, line number :" + lineNumber);
                 readfile.close();
                 return ;
             }
             try {
                 if (Integer.valueOf(splitLine[4]) < 0){
-                    System.out.println("Invalid height value should be positive line number :" + lineNumber);
+                    System.err.println("Invalid height value should be positive line number :" + lineNumber);
                     readfile.close();
                     return ;
                 }
             } catch (Exception e) {
-                System.out.println("Invalid coordinates, line number :" + lineNumber);
+                System.err.println("Invalid coordinates, line number :" + lineNumber);
                 readfile.close();
                 return ;
             }
@@ -116,15 +116,37 @@ public class Simulator {
 
     public void exec(String[] args){
         Scanner readfile = null;
+        PrintStream fileStream = null;
+        File outputFile;
+        PrintStream out;
+
+        outputFile = new File("../simulation.txt");
+        out = System.out;
+
+        if (!outputFile.canWrite() && outputFile.exists()){
+            System.out.println("Can't write on the output file !");
+            return ;
+        }
         if (check_file(args) == false)
             return ;
         readfile = initFile(args[0]);
         if (readfile == null)
             return ;
+        try {
+            fileStream = new PrintStream(outputFile);
+        } catch (Exception e) {
+            fileStream.close();
+            return ;
+        }
+        //Redirecting the output of "out" to the simulation.txt file
+        System.setOut(fileStream);
         parseAndCreate(readfile);
         for (int i = 0; i < this.weatherChangeNb; i++){
             this.w_Tower.changeWeather();
         }
+        //Close the fileStream and set out back to the default value
+        fileStream.close();
+        System.setOut(out);
     }
 }
 
