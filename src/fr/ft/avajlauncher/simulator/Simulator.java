@@ -71,37 +71,36 @@ public class Simulator {
         return readfile;
     }
 
-    private void parseAndCreate(Scanner readfile){
+    private boolean parseAndCreate(Scanner readfile){
         int lineNumber;
         String[] splitLine;
         int[] coords = new int[3];
         Flyable newFlyable;
 
-        lineNumber = 1;
+        lineNumber = 2;
         while (readfile.hasNextLine()) {
             splitLine = readfile.nextLine().split(" ");
             if (splitLine.length != 5){
                 System.err.println("Invalid number of args, line number :" + lineNumber);
                 readfile.close();
-                return ;
+                return false;
             }
             try {
                 AircraftType.valueOf(splitLine[0].toUpperCase());
             } catch (IllegalArgumentException  e) {
                 System.err.println("Invalid type of Aircraft, line number :" + lineNumber);
                 readfile.close();
-                return ;
+                return false;
             }
             try {
-                if (Integer.valueOf(splitLine[4]) < 0){
-                    System.err.println("Invalid height value should be positive line number :" + lineNumber);
-                    readfile.close();
-                    return ;
+                if (Integer.valueOf(splitLine[4]) < 0 || Integer.valueOf(splitLine[4]) > 100 || Integer.valueOf(splitLine[2]) < 0 || Integer.valueOf(splitLine[3]) < 0){
+                    System.err.println("Invalid coordinates value should be positive, line number :" + lineNumber);
+					readfile.close();
+                    return false;
                 }
             } catch (Exception e) {
-                System.err.println("Invalid coordinates, line number :" + lineNumber);
                 readfile.close();
-                return ;
+                return false;
             }
             coords[0] = Integer.valueOf(splitLine[2]);
             coords[1] = Integer.valueOf(splitLine[3]);
@@ -112,6 +111,7 @@ public class Simulator {
             lineNumber++;
         }
         readfile.close();
+		return true;
     }
 
     public void exec(String[] args){
@@ -140,7 +140,8 @@ public class Simulator {
         }
         //Redirecting the output of "out" to the simulation.txt file
         System.setOut(fileStream);
-        parseAndCreate(readfile);
+        if (!parseAndCreate(readfile))
+			return ;
         for (int i = 0; i < this.weatherChangeNb; i++){
             this.w_Tower.changeWeather();
         }
